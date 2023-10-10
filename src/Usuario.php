@@ -17,7 +17,7 @@ class Usuario {
     // Métodos para rotinas de CRUD no Banco
 
     public function inserir():void {
-        $sql = "INSERT INTO usuario(nome, email, senha, tipo) VALUE(:nome, :email, :senha, :tipo)";
+        $sql = "INSERT INTO usuarios(nome, email, senha, tipo) VALUE(:nome, :email, :senha, :tipo)";
 
          try {
             $consulta = $this->conexao->prepare($sql);
