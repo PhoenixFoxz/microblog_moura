@@ -14,6 +14,22 @@ class Usuario {
         $this->conexao = Banco::conecta();
     }
 
+    // Métodos para Ler Usuários 
+    public function lerUsuarios():array {
+        $sql = "SELECT id, nome, email, tipo FROM usuarios ORDER BY nome";
+
+        try {
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $erro) {
+            die("Erro ao carregar usuarios: ".$erro->getMessage());
+        }
+
+        return $resultado;
+    }
+
+
     // Métodos para rotinas de CRUD no Banco
 
     public function inserir():void {
