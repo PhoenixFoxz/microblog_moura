@@ -1,31 +1,28 @@
-<?php
+<?php 
 require_once "../inc/cabecalho-admin.php";
-
 use Microblog\Usuario;
 use Microblog\Utilitarios;
-
 $usuario = new Usuario;
-
-$listaDeUsuarios = $usuario->lerUsuarios();
-$quantidade = count($listaDeUsuarios);
+$listaDeUsuarios = $usuario->listar();
 ?>
 
 
 <div class="row">
 	<article class="col-12 bg-white rounded shadow my-1 py-4">
-
+		
 		<h2 class="text-center">
-			Usuários <span class="badge bg-dark"><?=$quantidade?></span>
+		Usuários <span class="badge bg-dark"> 
+				<?=count($listaDeUsuarios)?> </span>
 		</h2>
 
 		<p class="text-center mt-5">
 			<a class="btn btn-primary" href="usuario-insere.php">
-				<i class="bi bi-plus-circle"></i>
-				Inserir novo usuário</a>
+			<i class="bi bi-plus-circle"></i>	
+			Inserir novo usuário</a>
 		</p>
-
+				
 		<div class="table-responsive">
-
+		
 			<table class="table table-hover">
 				<thead class="table-light">
 					<tr>
@@ -38,30 +35,34 @@ $quantidade = count($listaDeUsuarios);
 
 				<tbody>
 
-					<?php foreach ($listaDeUsuarios as $usuario) { ?>
-						<tr>
-							<td><?= $usuario["nome"] ?></td>
-							<td><?= $usuario["email"] ?></td>
-							<td><?= $usuario["tipo"] ?></td>
-							<td class="text-center">
-								<a class="btn btn-warning" href="usuario-atualiza.php?id=<?=$usuario["id"]?>">
-									<i class="bi bi-pencil"></i> Atualizar
-								</a>
+				<?php foreach( $listaDeUsuarios as $itemUsuario ){ ?>
+					<tr>
+						<td> <?=$itemUsuario['nome']?> </td>
+						<td> <?=$itemUsuario['email']?> </td>
+						<td> <?=$itemUsuario['tipo']?> </td>
+						<td class="text-center">
+							<a class="btn btn-warning" 
+							href="usuario-atualiza.php?id=<?=$itemUsuario['id']?>">
+							<i class="bi bi-pencil"></i> Atualizar
+							</a>
+						
+							<a class="btn btn-danger excluir" 
+							href="usuario-exclui.php?id=<?=$itemUsuario['id']?>">
+							<i class="bi bi-trash"></i> Excluir
+							</a>
+						</td>
+					</tr>
+				<?php } ?>
 
-								<a class="btn btn-danger excluir" href="usuario-exclui.php?id=<?=$usuario["id"]?>">
-									<i class="bi bi-trash"></i> Excluir
-								</a>
-							</td>
-						</tr>
-					<?php } ?>
-				</tbody>
+				</tbody>                
 			</table>
-		</div>
-
+	</div>
+		
 	</article>
 </div>
 
 
-<?php
+<?php 
 require_once "../inc/rodape-admin.php";
 ?>
+
