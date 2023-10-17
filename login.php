@@ -40,7 +40,17 @@ if(isset($_POST['entrar'])){
 		header("location:login.php?campos_obrigatorios");
 	} else 
 	{
-		echo "Ok, você pode logar...";
+		// Capturar o e-mail
+		$usuario = new Usuario;
+		$usuario->setEmail($_POST['email']);
+		// Buscar o usuário/e-mail no Banco de Dados
+
+		// Se não existir o usuário/e-mail, continuará em login.php
+
+		// Se existir;
+		// - verificar a senha
+		// - está correta? iniciar o processo de login
+		// - não está? continuará em login.php
 	}
 }
 ?>

@@ -1,3 +1,6 @@
+<?php
+require_once "vendo/autoload.php"; 
+?>
 <!DOCTYPE html>
 <html lang="pt-br" class="h-100">
 <head>
