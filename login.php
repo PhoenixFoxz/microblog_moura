@@ -10,6 +10,10 @@ if( isset($_GET["campos_obrigatorios"]) )
 	$feedback = "Preencha e-mail e senha!";
 } elseif( isset($_GET['dados_incorretos']) ) {
 	$feedback = "Dados incorretos, tente novamente.";
+} elseif( isset($_GET['logout']) ){
+	$feedback = 'Você saiu do sistema!';
+} elseif( isset($_GET['acesso_proibido']) ){
+	$feedback = 'Você deve logar primeiro!';
 }
 ?>
 
