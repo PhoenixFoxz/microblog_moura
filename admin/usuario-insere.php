@@ -16,6 +16,7 @@ if(isset($_POST['inserir'])){
 	$usuario->inserir();
 	header("location:usuarios.php");	
 }
+$sessao->verificaAcessoAdmin();
 ?>
 
 
