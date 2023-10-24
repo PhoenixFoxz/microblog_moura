@@ -1,5 +1,5 @@
-<?php
-require_once "vendor/autoload.php"; 
+<?php 
+require_once "vendor/autoload.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" class="h-100">

@@ -1,13 +1,12 @@
 <?php 
 use Microblog\Usuario;
-use Microblog\Utilitarios;
 require_once "../inc/cabecalho-admin.php";
+$sessao->verificaAcessoAdmin();
 
 /* Script para carregamento */
 $usuario = new Usuario;
 $usuario->setId($_GET["id"]);
 $dados = $usuario->listarUm();
-$sessao->verificaAcessoAdmin();
 
 /* Script para atualização */
 if( isset($_POST["atualizar"]) ){
