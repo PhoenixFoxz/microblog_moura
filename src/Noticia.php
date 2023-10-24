@@ -24,6 +24,25 @@ final class Noticia{
         $this->conexao = Banco::conecta();
     }
 
+    public function inserir():void {
+        $sql = "INSERT INTO noticias(titulo, texto, resumo, imagem, destaque, usuario_id, categoria_id) VALUES (:titulo, :texto, :resumo, :imagem, :destaque, :usuario_id, :categoria_id)"; // parametros nomeados
+
+        try {
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->bindValue(":titulo", $this->titulo, PDO::PARAM_STR);
+            $consulta->bindValue(":texto", $this->texto, PDO::PARAM_STR);
+            $consulta->bindValue(":resumo", $this->resumo, PDO::PARAM_STR);
+            $consulta->bindValue(":imagem", $this->imagem, PDO::PARAM_STR);
+            $consulta->bindValue(":destaque", $this->destaque, PDO::PARAM_STR);
+
+            // Aqui, primeiro chamamos os getters de ID do Usuario e de Categoria, para só depois associar os valores aos parâmetros da consulta SQL. Isso é possivel devido à associação entre as Classes.
+            $consulta->bindValue(":usuario_id", $this->usuario->getId(), PDO::PARAM_INT);
+            $consulta->bindValue(":categoria_id", $this->categoria->getId(), PDO::PARAM_INT);
+        } catch (Exception $erro) {
+            die("Erro ao inserir categoria: ".$erro->getMessage());
+        }
+    }
+
     public function getId(): int {
         return $this->id;
     }
