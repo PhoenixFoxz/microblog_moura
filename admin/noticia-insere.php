@@ -1,5 +1,10 @@
 <?php 
 require_once "../inc/cabecalho-admin.php";
+use Microblog\Noticia;
+use Microblog\Utilitarios;
+
+$noticia = new Noticia;
+Utilitarios::dump($noticia);
 ?>
 
 
