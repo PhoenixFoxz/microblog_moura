@@ -5,8 +5,25 @@ use Microblog\Utilitarios;
 
 // Usamos o próprio objeto Noticia para acessar o objeto Categoria e seu método listar(). Isso é possivel devido à associação entre classes.
 $noticias = new Noticia;
-$listaDeCategorias = $noticias->categoria->listar()
+$listaDeCategorias = $noticias->categoria->listar();
 
+if(isset($_POST["inserir"])){
+	$noticias->setTitulo($_POST["titulo"]);
+	$noticias->setTexto($_POST["texto"]);
+	$noticias->setResumo($_POST["resumo"]);
+	$noticias->setDestaque($_POST["destaque"]);
+
+	// ID do usuário que está inserindo a notícia
+	$noticias->usuario->setId($_SESSION['id']);
+
+	// ID da categoria escolhida para a notícia
+	$noticias->categoria->setId($_POST['categoria']);
+
+	Utilitarios::dump($noticias);
+	// Sobre a imagem
+	// - Capturar o arquivo de imagem e enviar para o servidor
+	// - Capturar o nome/extensão e enviar para o banco de dados
+}
 ?>
 
 
