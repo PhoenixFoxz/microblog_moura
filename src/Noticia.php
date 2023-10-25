@@ -38,9 +38,38 @@ final class Noticia{
             // Aqui, primeiro chamamos os getters de ID do Usuario e de Categoria, para só depois associar os valores aos parâmetros da consulta SQL. Isso é possivel devido à associação entre as Classes.
             $consulta->bindValue(":usuario_id", $this->usuario->getId(), PDO::PARAM_INT);
             $consulta->bindValue(":categoria_id", $this->categoria->getId(), PDO::PARAM_INT);
+
+            $consulta->execute();
         } catch (Exception $erro) {
             die("Erro ao inserir categoria: ".$erro->getMessage());
         }
+    }
+
+    // Método para listar
+    public function listar():array {
+        // Se o tipo de usuario logado for admin
+        if($this->usuario->getTipo() === "admin"){
+            // Considere o SQL abaixo (pega tudo de todos)
+        $sql = "SELECT 
+                noticias.titulo, 
+                noticias.data, 
+                usuario.nome as Autor, 
+                noticias.id, 
+                noticias.destaque
+            FROM noticias INNER JOIN usuarios
+            ON noticias.usuario_id = usuario.id
+            ORDER BY data DESC";
+        } else {
+            // Senão, considere o SQL abaixo (pega somente referente ao editor)
+        $sql = "SELECT 
+                titulo, 
+                destaque,
+                data,
+                id
+            FROM noticias WHERE usuario_id = :usuario_id
+            ORDER BY data DESC";
+        }
+
     }
 
     // Método para upload de foto
@@ -73,6 +102,7 @@ final class Noticia{
         // Movemos/enviamos da área temporária para a final/destino
         move_uploaded_file($temporario, $pastaFinal);
     }
+
 
     public function getId(): int {
         return $this->id;
