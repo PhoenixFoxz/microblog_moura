@@ -41,7 +41,7 @@ final class Noticia{
 
             $consulta->execute();
         } catch (Exception $erro) {
-            die("Erro ao inserir categoria: ".$erro->getMessage());
+            die("Erro ao inserir notícias: ".$erro->getMessage());
         }
     }
 
@@ -53,11 +53,11 @@ final class Noticia{
         $sql = "SELECT 
                 noticias.titulo, 
                 noticias.data, 
-                usuario.nome as Autor, 
+                usuarios.nome as Autor, 
                 noticias.id, 
                 noticias.destaque
             FROM noticias INNER JOIN usuarios
-            ON noticias.usuario_id = usuario.id
+            ON noticias.usuario_id = usuarios.id
             ORDER BY data DESC";
         } else {
             // Senão, considere o SQL abaixo (pega somente referente ao editor)
@@ -69,6 +69,22 @@ final class Noticia{
             FROM noticias WHERE usuario_id = :usuario_id
             ORDER BY data DESC";
         }
+
+        try {
+            $consulta = $this->conexao->prepare($sql);
+            // if($this->usuario->getTipo() === "editor"){
+            // ou
+            // Somente se NÃO for um admin, trate o parâmetro abaixo
+            if($this->usuario->getTipo() !== "admin"){
+            $consulta->bindValue(":usuario_id", $this->usuario->getId(), PDO::PARAM_INT);
+            }
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $erro) {
+            die("Erro ao carregar notícias: ".$erro->getMessage());
+        }
+
+        return $resultado;
 
     }
 
