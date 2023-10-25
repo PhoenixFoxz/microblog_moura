@@ -42,6 +42,7 @@ final class Categoria {
         return $resultado;
     }
 
+
     // SELECT de Categoria
     public function listarUm():array {
         $sql = "SELECT * FROM categorias WHERE id = :id";
