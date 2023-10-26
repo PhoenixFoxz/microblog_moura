@@ -186,8 +186,26 @@ final class Noticia{
 
             $consulta->execute();
         } catch (Exception $erro) {
-            die("Erro ao inserir notícias: ".$erro->getMessage());
+            die("Erro ao atualizar notícias: ".$erro->getMessage());
         }
+    }
+
+    // Métodos da área pública
+
+    // index.php
+    public function listarDestaques():array {
+        $sql = "SELECT id, titulo, resumo, imagem FROM noticias WHERE destaque = :destaque ORDER BY data DESC";
+
+        try {
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->bindValue(":destaque", $this->destaque, PDO::PARAM_STR);
+            $consulta->execute();
+            $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $erro) {
+            die("Erro ao carregar destaques: ".$erro->getMessage());
+        }
+
+        return $resultado;
     }
 
     public function getId(): int {
