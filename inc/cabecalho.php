@@ -3,6 +3,8 @@ require_once "vendor/autoload.php";
 use Microblog\Noticia;
 use Microblog\Utilitarios;
 $noticia = new Noticia;
+
+$listaDeCategorias = $noticia->categoria->listar();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" class="h-100">
@@ -39,9 +41,9 @@ $noticia = new Noticia;
             Categorias
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="noticias-por-categoria.php">Ciência</a></li>
-            <li><a class="dropdown-item" href="noticias-por-categoria.php">Educação</a></li>
-            <li><a class="dropdown-item" href="noticias-por-categoria.php">Tecnologia</a></li>
+            <?php foreach($listaDeCategorias as $itemCategoria){ ?>
+            <li><a class="dropdown-item" href="noticias-por-categoria.php"><?=$itemCategoria['nome']?></a></li>
+            <?php } ?>
           </ul>
         </li>
         <li class="nav-item">

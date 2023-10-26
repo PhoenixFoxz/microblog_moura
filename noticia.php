@@ -1,17 +1,19 @@
 <?php 
 require_once "inc/cabecalho.php";
+$noticia->setId($_GET['id']);
+$dados = $noticia->listarDetalhes();
 ?>
 
 
 <div class="row my-1 mx-md-n1">
 
     <article class="col-12">
-        <h2> Título da notícia... </h2>
+        <h2> <?=$dados['titulo']?> </h2>
         <p class="font-weight-light">
-            <time>Data da notícia...</time> - <span>Autor da notícia</span>
+            <time><?=$dados['data']?></time> - <span><?=$dados['Autor']?></span>
         </p>
-        <img src="https://picsum.photos/seed/picsum/200/100" alt="" class="float-left pr-2 img-fluid">
-        <p>Texto da notícia...</p>
+        <img src="imagens/<?=$dados['imagem']?>" alt="" class="float-start pe-2 img-fluid">
+        <p class="ajusta-texto"><?=$dados['texto']?></p>
     </article>
     
 
@@ -19,6 +21,7 @@ require_once "inc/cabecalho.php";
                   
 
 <?php 
+require_once "inc/todas.php";
 require_once "inc/rodape.php";
 ?>
 

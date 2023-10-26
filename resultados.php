@@ -40,6 +40,7 @@ require_once "inc/cabecalho.php";
 </div>        
 
 <?php 
+require_once "inc/todas.php";
 require_once "inc/rodape.php";
 ?>
 
