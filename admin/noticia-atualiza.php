@@ -33,7 +33,7 @@ if(isset($_POST['atualizar'])){
     }
 
     $noticia->atualizar();
-    header("location:noticia.php")
+    header("location:noticias.php");
 }
 ?>
 
@@ -78,7 +78,7 @@ if(isset($_POST['atualizar'])){
             <div class="mb-3">
                 <label for="imagem-existente" class="form-label">Imagem da notícia:</label>
                 <!-- campo somente leitura, meramente informativo -->
-                <input class="form-control" type="text" id="imagem-existente" name="imagem-existente" readonly>
+                <input class="form-control" type="text" id="imagem-existente" name="imagem-existente" value="<?=$dados['imagem']?>" readonly>
             </div>
 
             <div class="mb-3">
