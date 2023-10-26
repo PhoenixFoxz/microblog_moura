@@ -86,7 +86,9 @@ final class Noticia{
 
         return $resultado;
 
-    } public function listarUm():array {
+    } 
+    
+    public function listarUm():array {
         if($this->usuario->getTipo() === "admin"){
             // Carrega dados de qualquer noticia de qualquer pessoa
             $sql = "SELECT * FROM noticias WHERE id = :id";
@@ -141,6 +143,32 @@ final class Noticia{
         move_uploaded_file($temporario, $pastaFinal);
     }
 
+    public function atualizar():void {
+        if($this->usuario->getTipo() === "admin"){
+            $sql = "UPDATE noticias SET titulo = :titulo, texto = :texto, resumo = :resumo, imagem = :imagem, categoria_id = :categoria_id, destaque = :destaque WHERE id = :id";
+        } else {
+            $sql = "UPDATE noticias SET titulo = :titulo, texto = :texto, resumo = :resumo, imagem = :imagem, categoria_id = :categoria_id, destaque = :destaque WHERE id = :id AND usuario_id = :usuario_id";
+        }
+        try {
+            $consulta = $this->conexao->prepare($sql);
+            $consulta->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $consulta->bindValue(":titulo", $this->titulo, PDO::PARAM_STR);
+            $consulta->bindValue(":texto", $this->texto, PDO::PARAM_STR);
+            $consulta->bindValue(":resumo", $this->resumo, PDO::PARAM_STR);
+            $consulta->bindValue(":imagem", $this->imagem, PDO::PARAM_STR);
+            $consulta->bindValue(":destaque", $this->destaque, PDO::PARAM_STR);
+
+            // Aqui, primeiro chamamos os getters de ID do Usuario e de Categoria, para só depois associar os valores aos parâmetros da consulta SQL. Isso é possivel devido à associação entre as Classes.
+            if($this->usuario->getTipo() !== "admin"){
+                $consulta->bindValue(":usuario_id", $this->usuario->getId(), PDO::PARAM_INT);
+            }
+            $consulta->bindValue(":categoria_id", $this->categoria->getId(), PDO::PARAM_INT);
+
+            $consulta->execute();
+        } catch (Exception $erro) {
+            die("Erro ao inserir notícias: ".$erro->getMessage());
+        }
+    }
 
     public function getId(): int {
         return $this->id;
