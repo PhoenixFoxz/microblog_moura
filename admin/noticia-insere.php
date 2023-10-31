@@ -3,31 +3,37 @@ require_once "../inc/cabecalho-admin.php";
 use Microblog\Noticia;
 use Microblog\Utilitarios;
 
-// Usamos o próprio objeto Noticia para acessar o objeto Categoria e seu método listar(). Isso é possivel devido à associação entre classes.
-$noticias = new Noticia;
-$listaDeCategorias = $noticias->categoria->listar();
+/* Usamos o próprio objeto Noticia para acessar
+o objeto Categoria e seu método listar(). Isso é possível
+devido à associação entre classes. */
+$noticia = new Noticia;
+$listaDeCategorias = $noticia->categoria->listar();
 
 if(isset($_POST["inserir"])){
-	$noticias->setTitulo($_POST["titulo"]);
-	$noticias->setTexto($_POST["texto"]);
-	$noticias->setResumo($_POST["resumo"]);
-	$noticias->setDestaque($_POST["destaque"]);
+	$noticia->setTitulo($_POST["titulo"]);
+	$noticia->setTexto($_POST["texto"]);
+	$noticia->setResumo($_POST["resumo"]);
+	$noticia->setDestaque($_POST["destaque"]);
 
 	// ID do usuário que está inserindo a notícia
-	$noticias->usuario->setId($_SESSION['id']);
-
+	$noticia->usuario->setId($_SESSION["id"]);
+	
 	// ID da categoria escolhida para a notícia
-	$noticias->categoria->setId($_POST['categoria']);
+	$noticia->categoria->setId($_POST['categoria']);
 
-	// Sobre a imagem
-	// - Capturar o arquivo de imagem
-	$imagem = $_FILES['imagem'];
-	// - Enviar para o servidor
-	$noticias->upload($imagem);
-	// - Capturar o nome/extensão e enviar para o banco de dados
-	$noticias->setImagem($imagem["name"]);
+	/* Sobre a imagem */
+	
+	// Capturar o arquivo de imagem 
+	$imagem = $_FILES["imagem"];
+	
+	// Enviar para o servidor
+	$noticia->upload($imagem);
+	
+	// Capturar o nome/extensão e enviar para o objeto de Noticia
+	$noticia->setImagem($imagem["name"]);
+
 	// Executar no banco e redirecionar
-	$noticias->inserir();
+	$noticia->inserir();
 	header("location:noticias.php");
 }
 ?>
@@ -39,16 +45,22 @@ if(isset($_POST["inserir"])){
 		<h2 class="text-center">
 		Inserir nova notícia
 		</h2>
-			<!-- Para que o formulário aceite arquivos (upload), é necessário habilitar o atributo enctype  -->
+				
+		<!-- Para que o formulário aceite arquivos (upload),
+		é necessário habilitar o atributo enctype -->
 		<form class="mx-auto w-75" action="" method="post" id="form-inserir" name="form-inserir" enctype="multipart/form-data">
 
             <div class="mb-3">
                 <label class="form-label" for="categoria">Categoria:</label>
                 <select class="form-select" name="categoria" id="categoria" required>
 					<option value=""></option>
-<?php foreach ($listaDeCategorias as $itemCategoria) {?>
-                    <option value="<?=$itemCategoria['id']?>"><?=$itemCategoria['nome']?></option>
-<?php } ?>
+
+				<?php foreach($listaDeCategorias as $itemCategoria) { ?>
+					<option value="<?=$itemCategoria['id']?>">
+						<?=$itemCategoria['nome']?>
+					</option>
+				<?php } ?>
+
 				</select>
 			</div>
 

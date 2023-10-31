@@ -6,30 +6,36 @@ use Microblog\Utilitarios;
 
 $noticia = new Noticia;
 
-// Carregando as categoriaas para o <select> HTML
+// Carregando as categorias para o <select> HTML
 $listaDeCategorias = $noticia->categoria->listar();
 
 // Carregando os dados de quem está logado
 $noticia->usuario->setId($_SESSION['id']);
 $noticia->usuario->setTipo($_SESSION['tipo']);
+
 $noticia->setId($_GET['id']);
+
 $dados = $noticia->listarUm();
 
-if(isset($_POST['atualizar'])){
+if(isset($_POST["atualizar"])){
     $noticia->setTitulo($_POST["titulo"]);
     $noticia->setTexto($_POST["texto"]);
     $noticia->setResumo($_POST["resumo"]);
     $noticia->setDestaque($_POST["destaque"]);
-    $noticia->categoria->setId($_POST['categoria']);
-    // Lógica/Algoritmo para atualizar a foto (se necessário)
+    $noticia->categoria->setId($_POST["categoria"]);
 
-    // Se o campo imagem estiver vazio, então significa que o usuário NÃO QUER TROCAR DE IMAGEM. Portanto, vamos manter a imagem existente.
-    if( empty($_FILES['imagem']['name']) ){
-        $noticia->setImagem($_POST['imagem-existente']);
-    } else {  
-        // Caso contrário, vamos pegar a referência (nome/extensão) da nova imagem, fazer o upload do novo arquivo e enviar a referência para o objeto usando o setter.
-        $noticia->upload($_FILES['imagem']);
-        $noticia->setImagem($_FILES['imagem']['name']);
+    /* Lógica/Algoritmo para atualizar a foto (se necessário) */
+
+    /* Se o campo imagem estiver vazio, então significa
+    que o usuário NÃO QUER TROCAR DE IMAGEM. Portanto,
+    vamos manter a imagem existente. */
+    if( empty($_FILES["imagem"]["name"]) ){
+        $noticia->setImagem($_POST["imagem-existente"]);
+    } else {
+        /* Caso contrário, vamos pegar a referência (nome/extensão) da nova imagem, fazer o upload do novo arquivo e enviar a referência
+        para o objeto usando o setter. */
+        $noticia->upload($_FILES["imagem"]);
+        $noticia->setImagem($_FILES["imagem"]["name"]);
     }
 
     $noticia->atualizar();
@@ -51,17 +57,21 @@ if(isset($_POST['atualizar'])){
                 <label class="form-label" for="categoria">Categoria:</label>
                 <select class="form-select" name="categoria" id="categoria" required>
                     <option value=""></option>
-                    <?php foreach ($listaDeCategorias as $itemCategoria) {?>
-                        <option
-                        <?php if($dados['categoria_id'] === $itemCategoria['id']) echo "selected"; ?>
-                        value="<?=$itemCategoria['id']?>"><?=$itemCategoria['nome']?></option>
-                    <?php } ?>
+
+                    <?php foreach($listaDeCategorias as $itemCategoria) { ?>
+					<option 
+                    <?php if($dados["categoria_id"] === $itemCategoria["id"]) echo " selected " ?>
+                    value="<?=$itemCategoria['id']?>">
+						<?=$itemCategoria['nome']?>
+					</option>
+				    <?php } ?>
+
                 </select>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="titulo">Título:</label>
-                <input class="form-control" required type="text" id="titulo" name="titulo" value="<?=$dados['titulo']?>">
+                <input value="<?=$dados['titulo']?>" class="form-control" required type="text" id="titulo" name="titulo">
             </div>
 
             <div class="mb-3">
@@ -78,7 +88,7 @@ if(isset($_POST['atualizar'])){
             <div class="mb-3">
                 <label for="imagem-existente" class="form-label">Imagem da notícia:</label>
                 <!-- campo somente leitura, meramente informativo -->
-                <input class="form-control" type="text" id="imagem-existente" name="imagem-existente" value="<?=$dados['imagem']?>" readonly>
+                <input value="<?=$dados['imagem']?>" class="form-control" type="text" id="imagem-existente" name="imagem-existente" readonly>
             </div>
 
             <div class="mb-3">
@@ -89,12 +99,12 @@ if(isset($_POST['atualizar'])){
             <div class="mb-3">
                 <p>Deixar a notícia em destaque?
                     <input 
-                    <?php if($dados['destaque'] === "nao") echo "checked";?> 
+                    <?php if($dados["destaque"] === "nao") echo " checked "?>
                     type="radio" class="btn-check" name="destaque" id="nao" autocomplete="off" checked value="nao">
                     <label class="btn btn-outline-danger" for="nao">Não</label>
 
                     <input
-                    <?php if($dados['destaque'] === "sim") echo "checked";?> 
+                    <?php if($dados["destaque"] === "sim") echo " checked "?>
                     type="radio" class="btn-check" name="destaque" id="sim" autocomplete="off" value="sim">
                     <label class="btn btn-outline-success" for="sim">Sim</label>
                 </p>

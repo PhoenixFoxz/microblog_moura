@@ -3,14 +3,15 @@ require_once "../inc/cabecalho-admin.php";
 
 use Microblog\Noticia;
 use Microblog\Utilitarios;
-
 $noticia = new Noticia;
 
-// Capturando o id e o tipo do usuário logado e associando estes valores às propriedades do objeto
+/* Capturando o id e o tipo do usuário logado
+e associando estes valores às propriedades do objeto */
 $noticia->usuario->setId($_SESSION['id']);
 $noticia->usuario->setTipo($_SESSION['tipo']);
 
 $listaDeNoticias = $noticia->listar();
+
 ?>
 
 
@@ -18,7 +19,8 @@ $listaDeNoticias = $noticia->listar();
 	<article class="col-12 bg-white rounded shadow my-1 py-4">
 		
 		<h2 class="text-center">
-		Notícias <span class="badge bg-dark">
+		Notícias 
+		<span class="badge bg-dark">
 			<?=count($listaDeNoticias)?>
 		</span>
 		</h2>
@@ -36,38 +38,43 @@ $listaDeNoticias = $noticia->listar();
 					<tr>
                         <th>Título</th>
                         <th>Data</th>
-						<?php if($_SESSION['tipo'] === 'admin'){ ?>
-						    <th>Autor</th>
+					
+						<?php if($_SESSION["tipo"] === "admin"){ ?>
+						<th>Autor</th>
 						<?php } ?>
+
 						<th class="text-center">Destaque</th>
 						<th class="text-center" colspan="2">Operações</th>
 					</tr>
 				</thead>
 
 				<tbody>
-                <?php foreach ($listaDeNoticias as $itemNoticia) {?>
+
+<?php foreach($listaDeNoticias as $itemNoticia) { ?>
 					<tr>
-                        <td> <?=$itemNoticia["titulo"]?> </td>
-                        <td> <?=$itemNoticia["data"]?> </td>
-						<?php if($_SESSION['tipo'] === 'admin'){ ?>
-                            <td> <?=$itemNoticia['Autor']?> </td>
+                        <td> <?=$itemNoticia['titulo']?> </td>
+                        <td> <?=Utilitarios::formataData($itemNoticia['data'])?> </td>
+
+                        <?php if($_SESSION["tipo"] === "admin"){ ?>
+						<td> <?=$itemNoticia['autor']?> </td>
 						<?php } ?>
-						<td>
-							<?=$itemNoticia["destaque"]?>
-						</td>
+
+						<td class="text-center"><?=$itemNoticia['destaque']?></td>
+
 						<td class="text-center">
 							<a class="btn btn-warning" 
 							href="noticia-atualiza.php?id=<?=$itemNoticia['id']?>">
 							<i class="bi bi-pencil"></i> Atualizar
 							</a>
+						</td>
+						<td>
 							<a class="btn btn-danger excluir" 
 							href="noticia-exclui.php?id=<?=$itemNoticia['id']?>">
 							<i class="bi bi-trash"></i> Excluir
 							</a>
 						</td>
 					</tr>
-                <?php } ?>
-
+<?php } ?>
 				</tbody>                
 			</table>
 	</div>
